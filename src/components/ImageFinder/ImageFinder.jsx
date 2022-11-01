@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // import axios from 'axios';
 
-// import Loader from './Loader/Loader';
+import { Loader } from './Loader/Loader';
 import Searchbar from './Searchbar/Searchbar';
 // import ImageGallery from './ImageGallery/ImageGallery';
 // import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
@@ -24,8 +25,8 @@ class ImageFinder extends Component {
   render() {
     return (
       <section>
-        {/* <Loader /> */}
         <Searchbar onSubmit={this.onFormSubmit} />
+        {/* <Loader /> */}
         <ToastContainer
           position="top-right"
           autoClose={3000}
