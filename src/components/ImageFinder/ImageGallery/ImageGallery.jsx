@@ -4,7 +4,15 @@ import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 function ImageGallery({ pictures }) {
   return (
     <ul>
-      <ImageGalleryItem picture={pictures} />
+      {pictures.map(({ id, webformatURL, largeImageURL }) => {
+        return (
+          <ImageGalleryItem
+            key={id}
+            previewURL={webformatURL}
+            modalURL={largeImageURL}
+          />
+        );
+      })}
     </ul>
   );
 }
