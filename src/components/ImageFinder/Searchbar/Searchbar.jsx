@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { toast } from 'react-toastify';
+import { FaSearch } from 'react-icons/fa';
 
 class Searchbar extends Component {
   state = {
@@ -10,7 +11,7 @@ class Searchbar extends Component {
     event.preventDefault();
 
     if (this.state.value.trim() === '') {
-      toast.warn('Заполните поле для поиска картинок!');
+      toast.info('Write field to search for pictures!');
       return;
     }
 
@@ -24,10 +25,12 @@ class Searchbar extends Component {
 
   render() {
     return (
-      <header>
-        <form onSubmit={this.submitOnForm}>
-          <button type="submit">
-            <span>Search</span>
+      <header className="searchbar">
+        <form onSubmit={this.submitOnForm} className="search-form">
+          <button type="submit" className="search-form-button">
+            <span className="search-form-button-label">
+              <FaSearch />
+            </span>
           </button>
 
           <input
@@ -37,6 +40,7 @@ class Searchbar extends Component {
             placeholder="Search images and photos"
             onChange={this.onInputChange}
             value={this.state.value}
+            className="search-form-input"
           />
         </form>
       </header>

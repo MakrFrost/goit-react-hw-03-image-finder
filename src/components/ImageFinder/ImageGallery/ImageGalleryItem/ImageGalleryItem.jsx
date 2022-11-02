@@ -1,10 +1,16 @@
-import React from 'react';
-
-function ImageGalleryItem() {
+function ImageGalleryItem({ picture }) {
   return (
-    <li>
-      <img src="" alt="" />
-    </li>
+    <div>
+      {picture.hits.map(({ id, webformatURL }) => (
+        <li key={id} className="image-gallery-item">
+          <img
+            src={webformatURL}
+            className="image-gallery-item-image"
+            alt="img"
+          />
+        </li>
+      ))}
+    </div>
   );
 }
 
