@@ -1,10 +1,9 @@
 import React from 'react';
-import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
-// import css from '.../';
+import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 
 function ImageGallery({ pictures }) {
   return (
-    <ul className="image-gallery">
+    <ul>
       <ImageGalleryItem picture={pictures} />
     </ul>
   );

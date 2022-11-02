@@ -1,6 +1,6 @@
 function ImageGalleryItem({ picture }) {
   return (
-    <div>
+    <div className="image-gallery">
       {picture.hits.map(({ id, webformatURL }) => (
         <li key={id} className="image-gallery-item">
           <img
