@@ -125,8 +125,9 @@ img {
 .image-gallery {
   display: flex;
   flex-wrap: wrap;
+  margin-right: 50px;
   margin-top: calc(-1 * 30px);
-  margin-left: calc(-1 * 30px);
+  margin-left: calc(-1 * 50px);
 
   list-style: none;
 }
