@@ -1,15 +1,16 @@
 import React from 'react';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 
-function ImageGallery({ pictures }) {
+function ImageGallery({ pictures, onClickImg }) {
   return (
     <ul className="image-gallery">
-      {pictures.hits.map(picture => {
+      {pictures.map(picture => {
         return (
           <ImageGalleryItem
             key={picture.id}
             previewURL={picture.webformatURL}
             modalURL={picture.largeImageURL}
+            onClickImg={onClickImg}
           />
         );
       })}

@@ -1,7 +1,11 @@
 import React from 'react';
 
-function Button() {
-  return <button type="button">Load More</button>;
+function Button({ loadMore }) {
+  return (
+    <button onClick={loadMore} type="button" className="button">
+      Load More
+    </button>
+  );
 }
 
 export default Button;

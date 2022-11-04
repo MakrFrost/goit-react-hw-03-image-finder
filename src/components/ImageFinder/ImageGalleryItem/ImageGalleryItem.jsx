@@ -1,7 +1,12 @@
-function ImageGalleryItem({ id, previewURL, modalURL }) {
+function ImageGalleryItem({ id, previewURL, onClickImg, modalURL }) {
   return (
     <li key={id} className="image-gallery-item">
-      <img src={previewURL} className="image-gallery-item-image" alt="img" />
+      <img
+        src={previewURL}
+        className="image-gallery-item-image"
+        alt="img"
+        onClick={onClickImg}
+      />
     </li>
   );
 }
