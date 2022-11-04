@@ -40,17 +40,17 @@ class ImageFinder extends Component {
 
       const data = responce.data;
 
-      this.setState({ findPictures: null, page: 1 });
-      this.setState({ findPictures: data.hits });
-
-      if (data.totalHits > 12) {
+      if (data.totalHits > 12 || data.totalHits === 13) {
         this.setState({ loadMore: true });
       }
       if (data.totalHits === 0) {
         toast.error('Error, not found images!');
       }
+
+      this.setState({ findPictures: null, page: 1 });
+      this.setState({ findPictures: data.hits });
     }
-    if (prevPage !== nextPage && prevPage !== 0) {
+    if (prevPage !== nextPage && nextPage !== 1) {
       const responce = await FetchPixabay(nextFind, nextPage)
         .catch(error => this.setState({ error }))
         .finally(() => this.setState({ loading: false }));
@@ -75,6 +75,7 @@ class ImageFinder extends Component {
     this.setState(({ modalShow }) => ({ modalShow: !modalShow }));
   };
   largeModalImg = pictures => {
+    //! см 117 строчку!
     return pictures.map(picture => picture.largeImageURL);
   };
 
@@ -108,9 +109,12 @@ class ImageFinder extends Component {
           <Modal
             modalClick={this.modalImageClick}
             largeImg={this.largeModalImg}
-          ></Modal>
+          >
+            <img src={findPictures.largeImageURL} alt="img" />
+          </Modal>
         )}
 
+        {/* прокинуть пропсом массив данных в модал чтоб там его мапнуть и вытащить большой пик для модалки, не забыть сцуко */}
         {loadMore && <Button loadMore={this.onLoadMore} />}
       </section>
     );
