@@ -22,28 +22,35 @@ class ImageFinder extends Component {
     loading: false,
     error: null,
     modalShow: false,
+    loadMore: false,
   };
 
-  async componentDidUpdate(prevProps, prevState) {
-    const prevPage = prevProps.page;
+  async componentDidUpdate(_, prevState) {
+    const prevPage = prevState.page;
     const nextPage = this.state.page;
     const prevFind = prevState.toFind;
     const nextFind = this.state.toFind;
 
     if (prevFind !== nextFind) {
       this.setState({ loading: true });
+
       const responce = await FetchPixabay(nextFind, nextPage)
         .catch(error => this.setState({ error }))
         .finally(() => this.setState({ loading: false }));
+
       const data = responce.data;
 
+      this.setState({ findPictures: null, page: 1 });
       this.setState({ findPictures: data.hits });
 
+      if (data.totalHits > 12) {
+        this.setState({ loadMore: true });
+      }
       if (data.totalHits === 0) {
         toast.error('Error, not found images!');
       }
     }
-    if (prevPage !== nextPage && nextPage !== 1) {
+    if (prevPage !== nextPage && prevPage !== 0) {
       const responce = await FetchPixabay(nextFind, nextPage)
         .catch(error => this.setState({ error }))
         .finally(() => this.setState({ loading: false }));
@@ -56,36 +63,26 @@ class ImageFinder extends Component {
     }
   }
 
-  //  if (prevState.page !== this.state.page && this.state.page !== 1) {
-
-  //       pixabayApi(this.state.name, this.state.page)
-  //         .then(q => query.hits)
-  //         .then(q =>
-  //           this.setState(prevState => ({
-  //             query: [...prevState.query, ...query],
-  //             status: 'resolved',
-  //           })),
-  //         );
-  //     }
-
   onFormSubmit = value => {
     this.setState({ toFind: value, page: 1 });
   };
-
   onLoadMore = () => {
     this.setState(prevState => ({
       page: prevState.page + 1,
     }));
   };
-
   modalImageClick = () => {
-    this.setState({ modalShow: true });
+    this.setState(({ modalShow }) => ({ modalShow: !modalShow }));
+  };
+  largeModalImg = pictures => {
+    return pictures.map(picture => picture.largeImageURL);
   };
 
   //!Остановился на модалке
 
   render() {
-    const { modalShow, error, toFind, loading, findPictures } = this.state;
+    const { loadMore, modalShow, error, toFind, loading, findPictures } =
+      this.state;
 
     return (
       <section className="app">
@@ -100,10 +97,21 @@ class ImageFinder extends Component {
         {!toFind && (
           <h2 className="start-message">Enter something to searching images</h2>
         )}
-        {findPictures && <ImageGallery pictures={findPictures} />}
+        {findPictures && (
+          <ImageGallery
+            pictures={findPictures}
+            modalClick={this.modalImageClick}
+          />
+        )}
 
-        {modalShow && <Modal modalClick={this.modalImageClick} />}
-        {findPictures !== null && <Button loadMore={this.onLoadMore} />}
+        {modalShow && (
+          <Modal
+            modalClick={this.modalImageClick}
+            largeImg={this.largeModalImg}
+          ></Modal>
+        )}
+
+        {loadMore && <Button loadMore={this.onLoadMore} />}
       </section>
     );
   }
