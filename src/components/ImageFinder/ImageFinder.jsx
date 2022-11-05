@@ -23,6 +23,7 @@ class ImageFinder extends Component {
     error: null,
     modalShow: false,
     loadMore: false,
+    largeImageURL: null,
   };
 
   async componentDidUpdate(_, prevState) {
@@ -71,19 +72,23 @@ class ImageFinder extends Component {
       page: prevState.page + 1,
     }));
   };
-  modalImageClick = () => {
+  modalImageClick = url => {
     this.setState(({ modalShow }) => ({ modalShow: !modalShow }));
-  };
-  largeModalImg = pictures => {
-    //! см 117 строчку!
-    return pictures.map(picture => picture.largeImageURL);
+    this.setState(() => ({ largeImageURL: url }));
   };
 
   //!Остановился на модалке
 
   render() {
-    const { loadMore, modalShow, error, toFind, loading, findPictures } =
-      this.state;
+    const {
+      largeImageURL,
+      loadMore,
+      modalShow,
+      error,
+      toFind,
+      loading,
+      findPictures,
+    } = this.state;
 
     return (
       <section className="app">
@@ -98,6 +103,7 @@ class ImageFinder extends Component {
         {!toFind && (
           <h2 className="start-message">Enter something to searching images</h2>
         )}
+
         {findPictures && (
           <ImageGallery
             pictures={findPictures}
@@ -108,10 +114,8 @@ class ImageFinder extends Component {
         {modalShow && (
           <Modal
             modalClick={this.modalImageClick}
-            largeImg={this.largeModalImg}
-          >
-            <img src={findPictures.largeImageURL} alt="img" />
-          </Modal>
+            largeImageURL={largeImageURL}
+          />
         )}
 
         {/* прокинуть пропсом массив данных в модал чтоб там его мапнуть и вытащить большой пик для модалки, не забыть сцуко */}

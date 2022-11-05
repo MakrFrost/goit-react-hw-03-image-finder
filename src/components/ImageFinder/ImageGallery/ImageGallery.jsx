@@ -1,7 +1,7 @@
 import React from 'react';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 
-function ImageGallery({ pictures, onClickImg, modalClick }) {
+function ImageGallery({ pictures, modalClick }) {
   return (
     <ul className="image-gallery">
       {pictures.map(picture => {
@@ -9,6 +9,7 @@ function ImageGallery({ pictures, onClickImg, modalClick }) {
           <ImageGalleryItem
             key={picture.id}
             previewURL={picture.webformatURL}
+            largeImageURL={picture.largeImageURL}
             modalClick={modalClick}
           />
         );
