@@ -24,6 +24,7 @@ class ImageFinder extends Component {
     modalShow: false,
     loadMore: false,
     largeImageURL: null,
+    // status: 'idle',
   };
 
   async componentDidUpdate(_, prevState) {
@@ -77,10 +78,9 @@ class ImageFinder extends Component {
     this.setState(() => ({ largeImageURL: url }));
   };
 
-  //!Остановился на модалке
-
   render() {
     const {
+      // status,
       largeImageURL,
       loadMore,
       modalShow,
@@ -89,6 +89,10 @@ class ImageFinder extends Component {
       loading,
       findPictures,
     } = this.state;
+
+    // if (status === 'idle') {
+    //   return <div></div>;
+    // }
 
     return (
       <section className="app">
@@ -101,7 +105,9 @@ class ImageFinder extends Component {
           </div>
         )}
         {!toFind && (
-          <h2 className="start-message">Enter something to searching images</h2>
+          <h2 className="start-message">
+            Enter something to searching images...
+          </h2>
         )}
 
         {findPictures && (
@@ -118,7 +124,6 @@ class ImageFinder extends Component {
           />
         )}
 
-        {/* прокинуть пропсом массив данных в модал чтоб там его мапнуть и вытащить большой пик для модалки, не забыть сцуко */}
         {loadMore && <Button loadMore={this.onLoadMore} />}
       </section>
     );
