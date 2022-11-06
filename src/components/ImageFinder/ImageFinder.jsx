@@ -18,7 +18,7 @@ class ImageFinder extends Component {
   state = {
     toFind: '',
     page: 1,
-    findPictures: null,
+    findPictures: [],
     loading: false,
     error: null,
     modalShow: false,
@@ -33,8 +33,7 @@ class ImageFinder extends Component {
     const prevFind = prevState.toFind;
     const nextFind = this.state.toFind;
 
-    if (prevFind !== nextFind) {
-      //
+    if (prevFind !== nextFind || prevPage !== nextPage) {
       this.setState({ loading: true });
 
       const responce = await FetchPixabay(nextFind, nextPage)
@@ -42,34 +41,24 @@ class ImageFinder extends Component {
         .finally(() => this.setState({ loading: false }));
 
       const data = responce.data;
+
       const totalPage = Math.ceil(data.totalHits / 12);
+      this.setState(prevState => ({
+        findPictures: [...prevState.findPictures, ...data.hits],
+      }));
 
       if (nextPage < totalPage) {
         this.setState({ loadMore: true });
       }
-      if (data.totalHits === 0 || nextPage === totalPage) {
+      if (data.totalHits === 0) {
         this.setState({ loadMore: false });
         toast.error('Error, not found images!');
       }
-
-      this.setState({ findPictures: null, page: 1 });
-      this.setState({ findPictures: data.hits });
-    }
-    if (prevPage !== nextPage && nextPage !== 1) {
-      const responce = await FetchPixabay(nextFind, nextPage)
-        .catch(error => this.setState({ error }))
-        .finally(() => this.setState({ loading: false }));
-
-      const data = responce.data;
-
-      this.setState(prevState => ({
-        findPictures: [...prevState.findPictures, ...data.hits],
-      }));
     }
   }
 
   onFormSubmit = value => {
-    this.setState({ toFind: value, page: 1 });
+    this.setState({ toFind: value, page: 1, findPictures: [] });
   };
   onLoadMore = () => {
     this.setState(prevState => ({
