@@ -34,6 +34,7 @@ class ImageFinder extends Component {
     const nextFind = this.state.toFind;
 
     if (prevFind !== nextFind) {
+      //
       this.setState({ loading: true });
 
       const responce = await FetchPixabay(nextFind, nextPage)
@@ -41,11 +42,13 @@ class ImageFinder extends Component {
         .finally(() => this.setState({ loading: false }));
 
       const data = responce.data;
+      const totalPage = Math.ceil(data.totalHits / 12);
 
-      if (data.totalHits > 12 || data.totalHits === 13) {
+      if (nextPage < totalPage) {
         this.setState({ loadMore: true });
       }
-      if (data.totalHits === 0) {
+      if (data.totalHits === 0 || nextPage === totalPage) {
+        this.setState({ loadMore: false });
         toast.error('Error, not found images!');
       }
 
