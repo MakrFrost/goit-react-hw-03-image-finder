@@ -25,6 +25,7 @@ class ImageFinder extends Component {
     loadMore: false,
     largeImageURL: null,
     // status: 'idle',
+    totalPage: 1,
   };
 
   async componentDidUpdate(_, prevState) {
@@ -41,15 +42,19 @@ class ImageFinder extends Component {
         .finally(() => this.setState({ loading: false }));
 
       const data = responce.data;
+      console.log(data);
 
       const totalPage = Math.ceil(data.totalHits / 12);
       this.setState(prevState => ({
         findPictures: [...prevState.findPictures, ...data.hits],
+        totalPage: totalPage,
       }));
 
-      if (nextPage < totalPage) {
-        this.setState({ loadMore: true });
-      }
+      // if (nextPage < totalPage) {
+      //   console.log('do');
+      //   this.setState({ loadMore: true });
+      //   console.log('posle');
+      // }
       if (data.totalHits === 0) {
         this.setState({ loadMore: false });
         toast.error('Error, not found images!');
@@ -58,7 +63,12 @@ class ImageFinder extends Component {
   }
 
   onFormSubmit = value => {
-    this.setState({ toFind: value, page: 1, findPictures: [] });
+    this.setState({
+      toFind: value,
+      page: 1,
+      findPictures: [],
+      totalPage: 1,
+    });
   };
   onLoadMore = () => {
     this.setState(prevState => ({
@@ -74,12 +84,14 @@ class ImageFinder extends Component {
     const {
       // status,
       largeImageURL,
-      loadMore,
+      // loadMore,
       modalShow,
       error,
       toFind,
       loading,
       findPictures,
+      totalPage,
+      page,
     } = this.state;
 
     // if (status === 'idle') {
@@ -116,7 +128,7 @@ class ImageFinder extends Component {
           />
         )}
 
-        {loadMore && <Button loadMore={this.onLoadMore} />}
+        {page !== totalPage && <Button loadMore={this.onLoadMore} />}
       </section>
     );
   }
