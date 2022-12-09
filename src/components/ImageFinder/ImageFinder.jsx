@@ -24,7 +24,6 @@ class ImageFinder extends Component {
     modalShow: false,
     loadMore: false,
     largeImageURL: null,
-    // status: 'idle',
     totalPage: 1,
   };
 
@@ -49,12 +48,6 @@ class ImageFinder extends Component {
         findPictures: [...prevState.findPictures, ...data.hits],
         totalPage: totalPage,
       }));
-
-      // if (nextPage < totalPage) {
-      //   console.log('do');
-      //   this.setState({ loadMore: true });
-      //   console.log('posle');
-      // }
       if (data.totalHits === 0) {
         this.setState({ loadMore: false });
         toast.error('Error, not found images!');
@@ -82,9 +75,7 @@ class ImageFinder extends Component {
 
   render() {
     const {
-      // status,
       largeImageURL,
-      // loadMore,
       modalShow,
       error,
       toFind,
@@ -93,10 +84,6 @@ class ImageFinder extends Component {
       totalPage,
       page,
     } = this.state;
-
-    // if (status === 'idle') {
-    //   return <div></div>;
-    // }
 
     return (
       <section className="app">
@@ -127,8 +114,9 @@ class ImageFinder extends Component {
             largeImageURL={largeImageURL}
           />
         )}
-
-        {page !== totalPage && <Button loadMore={this.onLoadMore} />}
+        {toFind.length > 0 && page < totalPage && (
+          <Button loadMore={this.onLoadMore} />
+        )}
       </section>
     );
   }
